@@ -1,9 +1,3 @@
-import express, { Express } from 'express';
-const app: Express = express();
-import Routes from '@routes/Routes';
+import app from './App';
 
-const routes: Express = Routes;
-
-app.use('/', routes);
-
-app.listen(3000);
+app.listen(3333);
