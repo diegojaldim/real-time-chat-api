@@ -1,10 +1,10 @@
 import { Users } from "@models/Users";
+import {Request, Response} from 'express';
 
 export default class UsersController {
 
-  test(): string {
-    console.log('Listen on port 3333');
-    return 'Listen on port';
+  list(req: Request, res: Response): Response {
+    return res.json({message: 'List users'});
   }
-    
+
 }

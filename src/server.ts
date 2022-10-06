@@ -1,9 +1,9 @@
-import express from 'express';
-const app = express();
-import UsersController from '@controllers/UsersController';
+import express, { Express } from 'express';
+const app: Express = express();
+import Routes from '@routes/Routes';
 
-app.get('/', (req, res) => {
-    return res.json({message: 'Hello world com typescript! blablab'});
-});
+const routes: Express = Routes;
 
-app.listen(3333);
+app.use('/', routes);
+
+app.listen(3000);
