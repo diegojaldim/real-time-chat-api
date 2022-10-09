@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import Users from '@schemas/Users';
+import bcrypt from 'bcrypt';
 
 class UsersController {
 
@@ -8,9 +9,19 @@ class UsersController {
     return res.json(users);
   }
 
-  public async create(req: Request, res: Response): Promise<Response> {
-    const user = await Users.create(req.body);
-    return res.json(user);
+  public async create(req: Request, res: Response) {
+    try {
+      const { password } = req.body;
+      const crypt = await bcrypt.hash(password, 10);
+      req.body.password = crypt;
+
+      const user = await Users.create(req.body);
+
+      return res.json(user);
+    } catch (err) {
+      console.log('err', err);
+      return res.status(400).json({message: 'Erro ao registrar usuário'});
+    }
   }
 
   public async getById(req: Request, res: Response): Promise<Response> {
