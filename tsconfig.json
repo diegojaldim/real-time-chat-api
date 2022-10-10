@@ -21,6 +21,7 @@
       "@controllers/*": ["./src/controllers/*"],
       "@schemas/*": ["./src/schemas/*"],
       "@routes/*": ["./src/routes/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
     }
   }
 }
