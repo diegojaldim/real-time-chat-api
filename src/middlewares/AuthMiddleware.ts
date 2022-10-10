@@ -16,8 +16,8 @@ class AuthMiddleware {
 
     try {
       const token: string = authorization.split('Bearer ').pop();
-      const isValidToken: Object = jwt.verify(token, '4d682ec4eed27c53849758bc13b6e179');
-      console.log(isValidToken);
+      const user = jwt.verify(token, process.env.JWT_SECRET);
+      req.body.user = user;
     } catch (err) {
       return res.status(401).send('Invalid token');
     }

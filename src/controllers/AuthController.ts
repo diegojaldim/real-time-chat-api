@@ -5,8 +5,6 @@ import jwt from 'jsonwebtoken';
 
 class AuthController {
 
-  private secretJwt: string = '4d682ec4eed27c53849758bc13b6e179';
-
   constructor() {
     this.login = this.login.bind(this);
   }
@@ -30,7 +28,11 @@ class AuthController {
     }
 
     user.password = undefined;
-    const token = jwt.sign({id: user.id}, this.secretJwt);
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h'}
+    );
     
     return res.send({user, token});
   }
