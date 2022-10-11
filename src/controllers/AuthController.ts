@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Users from '@schemas/Users';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
 
 class AuthController {
 
@@ -35,6 +36,17 @@ class AuthController {
     );
     
     return res.send({user, token});
+  }
+
+  public register(req: Request, res: Response): Response {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
+    console.log('errors', errors);
+    return res.send('register');
   }
 
 }

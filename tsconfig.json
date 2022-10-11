@@ -22,6 +22,7 @@
       "@schemas/*": ["./src/schemas/*"],
       "@routes/*": ["./src/routes/*"],
       "@middlewares/*": ["./src/middlewares/*"],
+      "@validators/*": ["./src/validators/*"],
     }
   }
 }
