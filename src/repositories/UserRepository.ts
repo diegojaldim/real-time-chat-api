@@ -1,10 +1,10 @@
 import User from '@entities/User';
-import UsersModel from '@schemas/Users';
+import UserModel from '@schemas/Users';
 
 class UsersRepository {
   
   public async create(user: User): Promise<User> {
-    return await UsersModel.create(user);
+    return await UserModel.create(user);
   }
 
 }

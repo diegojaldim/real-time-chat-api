@@ -3,16 +3,16 @@ import Users from '@schemas/Users';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
-import UsersService from '@services/UsersService';
+import UserService from '@services/UserService';
 import User from '@entities/User';
 
 class AuthController {
 
-  private readonly usersService: UsersService;
+  private readonly userService: UserService;
 
   constructor() {
     this.register = this.register.bind(this);
-    this.usersService = new UsersService();
+    this.userService = new UserService();
   }
 
   public async login(req: Request, res: Response): Promise<Response> {
@@ -56,7 +56,7 @@ class AuthController {
       password
     } = req.body;
 
-    const user = await this.usersService.create(new User({
+    const user = await this.userService.create(new User({
       name,
       email,
       password

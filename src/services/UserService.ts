@@ -1,19 +1,19 @@
 import User from '@entities/User';
-import UsersRepository from '@repositories/UsersRepository';
+import UserRepository from '@repositories/UserRepository';
 import { hash } from 'bcrypt';
 
 class UsersService {
 
-  private readonly usersRepository: UsersRepository;
+  private readonly userRepository: UserRepository;
 
   constructor() {
-    this.usersRepository = new UsersRepository();
+    this.userRepository = new UserRepository();
   }
 
   public async create(user: User): Promise<User> {
     user.password = await hash(user.password, 10);
 
-    const userModel = await this.usersRepository.create(user);
+    const userModel = await this.userRepository.create(user);
     userModel.password = undefined;
 
     return userModel;
