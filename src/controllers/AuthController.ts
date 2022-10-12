@@ -3,11 +3,16 @@ import Users from '@schemas/Users';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
+import UsersService from '@services/UsersService';
+import User from '@entities/User';
 
 class AuthController {
 
+  private readonly usersService: UsersService;
+
   constructor() {
-    this.login = this.login.bind(this);
+    this.register = this.register.bind(this);
+    this.usersService = new UsersService();
   }
 
   public async login(req: Request, res: Response): Promise<Response> {
@@ -38,15 +43,26 @@ class AuthController {
     return res.send({user, token});
   }
 
-  public register(req: Request, res: Response): Response {
+  public async register(req: Request, res: Response): Promise<Response> {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
-    console.log('errors', errors);
-    return res.send('register');
+
+    const {
+      name,
+      email,
+      password
+    } = req.body;
+
+    const user = await this.usersService.create(new User({
+      name,
+      email,
+      password
+    }));
+
+    return res.send(user);
   }
 
 }

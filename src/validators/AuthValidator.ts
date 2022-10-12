@@ -1,6 +1,10 @@
 import { checkSchema } from 'express-validator';
 
 export const register = checkSchema({
+  name: {
+    exists: true,
+    errorMessage: 'Campo obrigatório',
+  },
   email: {
     exists: true,
     errorMessage: 'Campo obrigatório',
