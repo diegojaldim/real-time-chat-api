@@ -5,6 +5,7 @@ import AuthMiddleware from '@middlewares/AuthMiddleware';
 const routes = Router();
 
 routes.use(AuthMiddleware.guard);
-routes.post('/channel', ChatController.channel);
+routes.get('/channel', ChatController.channel);
+routes.post('/send-message/:recipient', ChatController.sendMessage);
 
 export default routes;
