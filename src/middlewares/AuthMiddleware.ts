@@ -19,7 +19,7 @@ class AuthMiddleware {
       const user = jwt.verify(token, process.env.JWT_SECRET);
       req.body.user = user;
     } catch (err) {
-      return res.status(401).send('Invalid token');
+      return res.status(401).send({message: 'Invalid token'});
     }
 
     next();

@@ -2,7 +2,7 @@ import User from '@entities/User';
 import UserRepository from '@repositories/UserRepository';
 import { hash } from 'bcrypt';
 
-class UsersService {
+class UserService {
 
   private readonly userRepository: UserRepository;
 
@@ -19,6 +19,14 @@ class UsersService {
     return userModel;
   }
 
+  public async getById(id: string): Promise<User> {
+    return await this.userRepository.getById(id);
+  }
+
+  public async list(): Promise<Array<User>> {
+    return await this.userRepository.list();
+  }
+
 }
 
-export default UsersService;
+export default UserService;

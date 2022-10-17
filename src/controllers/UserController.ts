@@ -1,33 +1,33 @@
 import {Request, Response} from 'express';
-import Users from '@schemas/Users';
-import bcrypt from 'bcrypt';
+import UserService from '@services/UserService';
 
 class UsersController {
 
-  public async list(req: Request, res: Response): Promise<Response> {
-    const users = await Users.find();
-    return res.json(users);
+  private readonly userService: UserService;
+
+  constructor() {
+    this.getById = this.getById.bind(this);
+    this.list = this.list.bind(this);
+
+    this.userService = new UserService();
   }
 
-  public async create(req: Request, res: Response) {
-    try {
-      const { password } = req.body;
-      const crypt = await bcrypt.hash(password, 10);
-      req.body.password = crypt;
-
-      const user = await Users.create(req.body);
-
-      return res.json(user);
-    } catch (err) {
-      console.log('err', err);
-      return res.status(400).json({message: 'Erro ao registrar usuário'});
-    }
+  public async list(req: Request, res: Response): Promise<Response> {
+    const users = await this.userService.list();
+    return res.json(users);
   }
 
   public async getById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const user = await Users.findById(id);
-    return res.json(user);
+
+    try {
+      const user = await this.userService.getById(id);
+
+      return res.json(user);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send({msg: 'Erro ao recuperar usuário'});
+    }
   }
 
 }
