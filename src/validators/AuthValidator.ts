@@ -21,3 +21,14 @@ export const register = checkSchema({
     },
   }
 });
+
+export const login = checkSchema({
+  email: {
+    exists: true,
+    errorMessage: 'Campo obrigatório',
+  },
+  password: {
+    exists: true,
+    errorMessage: 'Campo obrigatório',
+  },
+});
