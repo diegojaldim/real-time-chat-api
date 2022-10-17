@@ -1,7 +1,9 @@
 import UserInterface from '@interfaces/UserInterface';
+import { ObjectId } from 'mongoose';
 
 class User implements UserInterface{
 
+  id?: ObjectId;
   name: string;
   email: string;
   password: string;

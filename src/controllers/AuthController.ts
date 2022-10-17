@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import Users from '@schemas/Users';
-import { compare } from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import UserService from '@services/UserService';
 import User from '@entities/User';
+import AuthService from '@services/AuthService';
+import Auth from '@entities/Auth';
 
 class AuthController {
 
@@ -21,26 +20,15 @@ class AuthController {
       password,
     } = req.body;
 
-    const user = await Users.findOne({email}).select('+password');
+    try {
+      const authService: AuthService = new AuthService();
+      const auth: Auth = await authService.login(email, password);
 
-    if (!user) {
-      return res.status(400).json({message: 'Usuário não encontrado'});
+      return res.send(auth);
+    } catch (err) {
+      console.error(err);
+      return res.status(400).send({message: err.message});
     }
-
-    const isValidPassword = await compare(password, user.password);
-
-    if (!isValidPassword) {
-      return res.status(400).json({message: 'Senha inválida'});
-    }
-
-    user.password = undefined;
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h'}
-    );
-    
-    return res.send({user, token});
   }
 
   public async register(req: Request, res: Response): Promise<Response> {

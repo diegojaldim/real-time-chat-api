@@ -1,7 +1,7 @@
 import User from '@entities/User';
 import UserModel from '@schemas/Users';
 
-class UsersRepository {
+class UserRepository {
   
   public async create(user: User): Promise<User> {
     return await UserModel.create(user);
@@ -14,6 +14,10 @@ class UsersRepository {
   public async list(): Promise<Array<User>> {
     return await UserModel.find();
   }
+
+  public async findByEmailWithPassword(email: string): Promise<User> {
+    return await UserModel.findOne({email}).select('+password');
+  }
 }
 
-export default UsersRepository;
+export default UserRepository;
