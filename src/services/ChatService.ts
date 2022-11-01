@@ -1,5 +1,6 @@
 import Chat from '@entities/Chat';
 import ChatRepository from '@repositories/ChatRepository';
+import { Types } from 'mongoose';
 
 class ChatService {
 
@@ -13,6 +14,12 @@ class ChatService {
     return this.chatRepository.create(chat);
   }
 
+  public async channel(
+    recipient: Types.ObjectId,
+    sender: Types.ObjectId
+  ): Promise<Array<Chat>> {
+    return await this.chatRepository.channel(recipient, sender);
+  }
 }
 
 export default ChatService;

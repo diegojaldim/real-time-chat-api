@@ -6,7 +6,10 @@ import { sendMessage } from '@validators/ChatValidator';
 const routes = Router();
 
 routes.use(AuthMiddleware.guard);
-routes.get('/channel', ChatController.channel);
+routes.get(
+  '/channel/:recipient',
+  ChatController.channel
+);
 routes.post(
   '/send-message/:recipient',
   sendMessage,

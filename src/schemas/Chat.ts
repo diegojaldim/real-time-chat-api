@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import ChatInterface from '@interfaces/ChatInterface';
 
 const chatSchema = new Schema<ChatInterface>({

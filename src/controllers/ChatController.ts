@@ -13,6 +13,7 @@ class ChatController {
 
   constructor() {
     this.sendMessage = this.sendMessage.bind(this);
+    this.channel = this.channel.bind(this);
     this.chatService = new ChatService();
   }
 
@@ -46,9 +47,21 @@ class ChatController {
     return res.send(201);
   }
 
-  public channel(req: Request, res: Response): Response {
-    console.log(req.body);
-    return res.json({chat: 'chat'});
+  public async channel(req: Request, res: Response): Promise<Response> {
+    const {
+      recipient,
+    } = req.params;
+
+    const {
+      user,
+    } = req.body;
+
+    const messages = await this.chatService.channel(
+      new mongoose.Types.ObjectId(recipient),
+      new mongoose.Types.ObjectId(user.id)
+    );
+
+    return res.json({messages});
   }
 
 }
