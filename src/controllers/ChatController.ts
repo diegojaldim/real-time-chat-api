@@ -5,6 +5,7 @@ import {
 import Chat from '@entities/Chat';
 import ChatService from '@services/ChatService';
 import mongoose from 'mongoose';
+import { validationResult } from 'express-validator';
 
 class ChatController {
 
@@ -15,7 +16,13 @@ class ChatController {
     this.chatService = new ChatService();
   }
 
-  public sendMessage(req: Request, res: Response): Response {
+  public async sendMessage(req: Request, res: Response): Promise<Response> {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+  
     const {
       recipient
     } = req.params;
@@ -25,11 +32,16 @@ class ChatController {
       message,
     } = req.body;
 
-    this.chatService.sendMessage(new Chat({
-      recipient: new mongoose.Types.ObjectId(recipient),
-      sender: new mongoose.Types.ObjectId(user.id),
-      message
-    }));
+    try {
+      await this.chatService.sendMessage(new Chat({
+        recipient: new mongoose.Types.ObjectId(recipient),
+        sender: new mongoose.Types.ObjectId(user.id),
+        message
+      }));
+    } catch (err) {
+      console.error(err);
+      return res.status(400).send({message: err.message});
+    }
 
     return res.send(201);
   }
