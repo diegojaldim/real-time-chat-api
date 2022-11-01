@@ -23,20 +23,23 @@ class ChatController {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-  
-    const {
-      recipient
-    } = req.params;
 
     const {
       user,
       message,
     } = req.body;
 
+    const sender = new mongoose.Types.ObjectId(user.id);
+    const recipient = new mongoose.Types.ObjectId(req.params.recipient);
+
+    if (this.chatService.isSenderAndRecipientEquals(recipient.toString(), sender.toString())) {
+      return res.status(400).send({message: 'Não pode enviar mensagem para você mesmo!'});
+    }
+
     try {
       await this.chatService.sendMessage(new Chat({
-        recipient: new mongoose.Types.ObjectId(recipient),
-        sender: new mongoose.Types.ObjectId(user.id),
+        recipient,
+        sender,
         message
       }));
     } catch (err) {
@@ -49,16 +52,19 @@ class ChatController {
 
   public async channel(req: Request, res: Response): Promise<Response> {
     const {
-      recipient,
-    } = req.params;
-
-    const {
       user,
     } = req.body;
 
+    const sender = new mongoose.Types.ObjectId(user.id);
+    const recipient = new mongoose.Types.ObjectId(req.params.recipient);
+
+    if (this.chatService.isSenderAndRecipientEquals(recipient.toString(), sender.toString())) {
+      return res.status(400).send({message: 'Não pode listar mensagens para você mesmo!'});
+    }
+  
     const messages = await this.chatService.channel(
-      new mongoose.Types.ObjectId(recipient),
-      new mongoose.Types.ObjectId(user.id)
+      recipient,
+      sender
     );
 
     return res.json({messages});

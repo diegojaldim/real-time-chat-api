@@ -20,6 +20,10 @@ class ChatService {
   ): Promise<Array<Chat>> {
     return await this.chatRepository.channel(recipient, sender);
   }
+
+  public isSenderAndRecipientEquals(recipient: string, sender: string): boolean {
+    return sender === recipient;
+  }
 }
 
 export default ChatService;
