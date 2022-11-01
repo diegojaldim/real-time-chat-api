@@ -32,10 +32,6 @@ class ChatController {
     const sender = new mongoose.Types.ObjectId(user.id);
     const recipient = new mongoose.Types.ObjectId(req.params.recipient);
 
-    if (this.chatService.isSenderAndRecipientEquals(recipient.toString(), sender.toString())) {
-      return res.status(400).send({message: 'Não pode enviar mensagem para você mesmo!'});
-    }
-
     try {
       await this.chatService.sendMessage(new Chat({
         recipient,
@@ -57,15 +53,17 @@ class ChatController {
 
     const sender = new mongoose.Types.ObjectId(user.id);
     const recipient = new mongoose.Types.ObjectId(req.params.recipient);
+    let messages = [];
 
-    if (this.chatService.isSenderAndRecipientEquals(recipient.toString(), sender.toString())) {
-      return res.status(400).send({message: 'Não pode listar mensagens para você mesmo!'});
+    try {
+      messages = await this.chatService.channel(
+        recipient,
+        sender
+      );
+    } catch (err) {
+      console.error(err);
+      return res.status(400).send({message: err.message});
     }
-  
-    const messages = await this.chatService.channel(
-      recipient,
-      sender
-    );
 
     return res.json({messages});
   }

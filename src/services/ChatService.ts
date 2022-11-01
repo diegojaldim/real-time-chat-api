@@ -11,6 +11,10 @@ class ChatService {
   }
 
   public sendMessage(chat: Chat): Promise<Chat> {
+    if (this.isSenderAndRecipientEquals(chat.recipient._id.toString(), chat.sender._id.toString())) {
+      throw new Error('Não pode enviar mensagem para você mesmo!');
+    }
+
     return this.chatRepository.create(chat);
   }
 
@@ -18,6 +22,10 @@ class ChatService {
     recipient: Types.ObjectId,
     sender: Types.ObjectId
   ): Promise<Array<Chat>> {
+    if (this.isSenderAndRecipientEquals(recipient._id.toString(), sender._id.toString())) {
+      throw new Error('Não pode listar mensagens para você mesmo!');
+    }
+
     return await this.chatRepository.channel(recipient, sender);
   }
 
