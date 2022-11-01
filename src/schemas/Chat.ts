@@ -1,13 +1,13 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, ObjectId } from 'mongoose';
 import ChatInterface from '@interfaces/ChatInterface';
 
 const chatSchema = new Schema<ChatInterface>({
   recipient: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true
   },
   sender: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true
   },
   message: {

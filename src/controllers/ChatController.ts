@@ -4,6 +4,7 @@ import {
 } from 'express';
 import Chat from '@entities/Chat';
 import ChatService from '@services/ChatService';
+import mongoose from 'mongoose';
 
 class ChatController {
 
@@ -15,16 +16,18 @@ class ChatController {
   }
 
   public sendMessage(req: Request, res: Response): Response {
-    const { recipient } = req.params;
-    
+    const {
+      recipient
+    } = req.params;
+
     const {
       user,
       message,
     } = req.body;
 
     this.chatService.sendMessage(new Chat({
-      recipient,
-      sender: user.id,
+      recipient: new mongoose.Types.ObjectId(recipient),
+      sender: new mongoose.Types.ObjectId(user.id),
       message
     }));
 

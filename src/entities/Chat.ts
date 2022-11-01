@@ -1,10 +1,10 @@
 import ChatInterface from '@interfaces/ChatInterface';
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 class Chat implements ChatInterface {
 
-  recipient: string;
-  sender: string;
+  recipient: mongoose.Types.ObjectId;
+  sender: mongoose.Types.ObjectId;
   message: string;
 
   constructor({

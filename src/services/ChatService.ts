@@ -1,11 +1,17 @@
 import Chat from '@entities/Chat';
+import ChatRepository from '@repositories/ChatRepository';
 
 class ChatService {
 
-  public sendMessage(chat: Chat) {
-    console.log('Send message -> ', chat);
+  private readonly chatRepository: ChatRepository;
+
+  constructor() {
+    this.chatRepository = new ChatRepository();
   }
 
+  public sendMessage(chat: Chat): Promise<Chat> {
+    return this.chatRepository.create(chat);
+  }
 
 }
 

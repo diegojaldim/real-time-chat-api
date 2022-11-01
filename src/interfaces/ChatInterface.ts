@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
+
 interface ChatInterface {
-  recipient: string;
-  sender: string;
+  recipient: mongoose.Types.ObjectId;
+  sender: mongoose.Types.ObjectId;
   message: string;
 }
 
