@@ -12,18 +12,20 @@ class ChatRepository {
     recipient: Types.ObjectId,
     sender: Types.ObjectId
   ): Promise<Array<Chat>> {
-    return await ChatModel.find({
-      $or: [
-        {
-          recipient,
-          sender
-        },
-        {
-          recipient: sender,
-          sender: recipient
-        }
-      ]
-    });
+    return await ChatModel
+      .find({
+        $or: [
+          {
+            recipient,
+            sender
+          },
+          {
+            recipient: sender,
+            sender: recipient
+          }
+        ]
+      })
+      .sort({sentAt: 1});
   }
 
 }
