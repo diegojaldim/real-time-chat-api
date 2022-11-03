@@ -25,7 +25,8 @@ class ChatRepository {
           }
         ]
       })
-      .sort({sentAt: 1});
+      .sort({sentAt: 1})
+      .limit(100);
   }
 
 }
