@@ -13,6 +13,10 @@ const chatSchema = new Schema<ChatInterface>({
   message: {
     type: String,
     required: true,
+  },
+  sentAt: {
+    type: Date,
+    required: true,
   }
 });
 

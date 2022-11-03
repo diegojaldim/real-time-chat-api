@@ -6,15 +6,18 @@ class Chat implements ChatInterface {
   recipient: mongoose.Types.ObjectId;
   sender: mongoose.Types.ObjectId;
   message: string;
+  sentAt: Date;
 
   constructor({
     recipient,
     sender,
-    message
+    message,
+    sentAt
   }: ChatInterface) {
     this.recipient = recipient;
     this.sender = sender;
     this.message = message;
+    this.sentAt = sentAt;
   }
 
 }

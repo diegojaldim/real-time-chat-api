@@ -31,19 +31,21 @@ class ChatController {
 
     const sender = new mongoose.Types.ObjectId(user.id);
     const recipient = new mongoose.Types.ObjectId(req.params.recipient);
+    const sentAt = new Date();
 
     try {
       await this.chatService.sendMessage(new Chat({
         recipient,
         sender,
-        message
+        message,
+        sentAt
       }));
     } catch (err) {
       console.error(err);
       return res.status(400).send({message: err.message});
     }
 
-    return res.send(201);
+    return res.sendStatus(201);
   }
 
   public async channel(req: Request, res: Response): Promise<Response> {
